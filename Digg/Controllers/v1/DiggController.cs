@@ -11,7 +11,7 @@
         [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
         public string Index()
         {           
-            return "Hello v1.0!";
+            return $"Hello v1.0! Current time: {DateTime.UtcNow.ToString("o")}";
         }
     }
 }
