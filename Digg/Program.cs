@@ -19,6 +19,7 @@ builder.Services.AddVersionedApiExplorer(setup =>
     setup.SubstituteApiVersionInUrl = true;
 });
 
+builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
@@ -39,5 +40,9 @@ app.UseSwaggerUI(opt =>
     }
 });
 
+app.UseExceptionHandler("/shared/error");
+app.UseStatusCodePages(async statusCodeContext
+    => await Results.Problem(statusCode: statusCodeContext.HttpContext.Response.StatusCode)
+        .ExecuteAsync(statusCodeContext.HttpContext));
 app.MapControllers();
 app.Run();
