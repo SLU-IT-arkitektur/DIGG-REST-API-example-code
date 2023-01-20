@@ -49,5 +49,13 @@
 
             return ValidationProblem();
         }
+
+        [HttpGet]
+        [Route("caches")]
+        [ResponseCache(CacheProfileName = "30sec")]
+        public IActionResult Caches()
+        {
+            return Ok(DateTime.Now.ToString());
+        }
     }
 }

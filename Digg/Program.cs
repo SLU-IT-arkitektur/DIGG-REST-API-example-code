@@ -1,7 +1,15 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    // No need for response caching middleware when using strictly client-side caching.
+    options.CacheProfiles.Add("30sec",
+        new CacheProfile()
+        {
+            Duration = 30
+        });
+});
 
 builder.Services.AddApiVersioning(opt =>
 {
@@ -45,4 +53,5 @@ app.UseStatusCodePages(async statusCodeContext
     => await Results.Problem(statusCode: statusCodeContext.HttpContext.Response.StatusCode)
         .ExecuteAsync(statusCodeContext.HttpContext));
 app.MapControllers();
+
 app.Run();
