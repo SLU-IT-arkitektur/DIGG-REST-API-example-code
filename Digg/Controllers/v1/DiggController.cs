@@ -5,10 +5,8 @@
     {
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CamelCaseExample))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status409Conflict)]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult Index()
         {
             var utcNow = DateTime.UtcNow;
@@ -24,11 +22,8 @@
 
         [HttpGet]
         [Route("errors")]
-        [SwaggerResponse(StatusCodes.Status200OK)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status409Conflict)]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult Errors()
         {
             throw new Exception("Exception!");
@@ -36,11 +31,8 @@
 
         [HttpGet]
         [Route("validationerrors")]
-        [SwaggerResponse(StatusCodes.Status200OK)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status409Conflict)]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [SwaggerResponse(StatusCodes.Status503ServiceUnavailable)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult ValidationErrors()
         {
             ModelState.AddModelError(
@@ -53,6 +45,7 @@
         [HttpGet]
         [Route("caches")]
         [ResponseCache(CacheProfileName = "30sec")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public IActionResult Caches()
         {
             return Ok(DateTime.Now.ToString());

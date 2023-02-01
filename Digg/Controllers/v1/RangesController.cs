@@ -18,8 +18,8 @@
         [HttpGet]
         [Route("", Name = nameof(GetRanges))]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CollectionDto<RangeDto>))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult GetRanges()
         {
             return Ok(ToDto(_ranges));
@@ -28,9 +28,9 @@
         [HttpGet]
         [Route("{id:int}", Name = nameof(GetRange))]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(RangeDto))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status404NotFound)]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult GetRange(int id)
         {         
             var range = _ranges.Where(r => r.Id == id).FirstOrDefault();
@@ -46,9 +46,9 @@
         [HttpDelete]
         [Route("{id:int}", Name = nameof(DeleteRange))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status404NotFound)]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult DeleteRange(int id)
         {
             var range = _ranges.Where(r => r.Id == id).FirstOrDefault();
