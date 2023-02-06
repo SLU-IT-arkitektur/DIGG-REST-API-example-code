@@ -1,4 +1,4 @@
-﻿namespace Digg.Controllers.v1
+﻿namespace Digg.Controllers
 {
     [ApiVersion("1.0")]
     public class RangesController : ApiControllerBase

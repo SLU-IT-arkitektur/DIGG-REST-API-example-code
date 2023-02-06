@@ -1,8 +1,13 @@
 ﻿public class ConfigureSwaggerGenOptions : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly IApiVersionDescriptionProvider _provider;
+    private readonly OpenApiInfo _openApiInfo;
 
-    public ConfigureSwaggerGenOptions(IApiVersionDescriptionProvider provider) => _provider = provider;
+    public ConfigureSwaggerGenOptions(IApiVersionDescriptionProvider provider, IOptions<OpenApiInfo> options) 
+    {
+            _provider = provider;
+            _openApiInfo = options.Value;
+    }
 
     /// <summary>
     /// Configure each API discovered for Swagger Documentation.
@@ -26,7 +31,8 @@
     {
         var info = new OpenApiInfo()
         {
-            Title = "API",
+            Title = _openApiInfo.Title,
+            Description = _openApiInfo.Description,
             Version = desc.ApiVersion.ToString()
         };
 

@@ -31,6 +31,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+builder.Services.Configure<OpenApiInfo>(
+    builder.Configuration.GetSection("OpenApiInfo"));
 
 var app = builder.Build();
 
