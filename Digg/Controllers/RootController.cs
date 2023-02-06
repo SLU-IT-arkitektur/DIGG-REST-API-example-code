@@ -18,6 +18,8 @@
         [HttpGet]
         [Route("apiinfo")]
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult ApiInfo(ApiVersion requestedApiVersion)
         {
             var assembly = Assembly.GetExecutingAssembly();
