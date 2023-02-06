@@ -4,10 +4,11 @@
     public class DiggController : ApiControllerBase
     {
         [HttpGet]
+        [Route("dates/{dateTime:DateTime}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CamelCaseExample))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public IActionResult Index()
+        public IActionResult Index(DateTime dateTime)
         {
             var utcNow = DateTime.UtcNow;
 
@@ -15,8 +16,10 @@
             {
                 IdExample = 1,
                 NameExample = "camelCase!",
-                DateTimeExample = utcNow,
-                DateTimeStringExample = utcNow.ToString("o")
+                DateTimeExample = dateTime,
+                DateTimeStringExample = dateTime.ToString("o"),
+                UtcNowDateTimeExample = utcNow,
+                UtcNowDateTimeStringExample = utcNow.ToString("O")
             });
         }
 
