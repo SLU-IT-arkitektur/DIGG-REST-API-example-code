@@ -9,7 +9,7 @@ builder.Services.AddControllers(options =>
         {
             Duration = 30
         });
-});
+}).AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddApiVersioning(opt =>
 {
