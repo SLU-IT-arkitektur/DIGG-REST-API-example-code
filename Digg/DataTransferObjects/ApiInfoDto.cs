@@ -1,6 +1,6 @@
 namespace Digg.Models
 {
-    public class ApiInfo
+    public class ApiInfoDto
     {
         public string? ApiName { get; set; }
         public string? ApiVersion { get; set; }

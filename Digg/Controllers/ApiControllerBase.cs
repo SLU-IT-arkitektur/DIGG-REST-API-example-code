@@ -1,5 +1,7 @@
 ﻿[ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
+[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+[SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
 public abstract class ApiControllerBase : ControllerBase 
 {
     private IActionDescriptorCollectionProvider? _actionDescriptorCollectionProvider;

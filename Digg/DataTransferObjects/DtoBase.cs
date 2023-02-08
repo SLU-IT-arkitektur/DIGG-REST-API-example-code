@@ -2,7 +2,7 @@
 
 namespace Digg.DataTransferObjects
 {
-    public abstract class DtoBase
+    public class DtoBase
     {
         [JsonPropertyName("_links")]
         public List<Link> Links { get; set; } = new List<Link>();

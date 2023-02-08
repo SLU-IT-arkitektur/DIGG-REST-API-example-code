@@ -13,7 +13,7 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddApiVersioning(opt =>
 {
-    opt.DefaultApiVersion = new ApiVersion(1, 0);
+    opt.DefaultApiVersion = new ApiVersion(2, 0);
     opt.AssumeDefaultVersionWhenUnspecified = true;
     opt.ReportApiVersions = true;
     opt.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
@@ -41,8 +41,10 @@ app.UseSwagger(c => {
 });
 app.UseSwaggerUI(opt =>
 {
-    var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+    var apiVersionDescriptionProvider = 
+        app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+    
+    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse())
     {
         opt.SwaggerEndpoint($"/api/{description.GroupName}/openapi.json",
             description.GroupName.ToUpperInvariant());

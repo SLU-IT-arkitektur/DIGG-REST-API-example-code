@@ -1,6 +1,6 @@
 ﻿namespace Digg.Controllers
 {
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class RangesController : ApiControllerBase
     {
         private readonly IEnumerable<Models.Range> _ranges;
@@ -18,8 +18,6 @@
         [HttpGet]
         [Route("", Name = nameof(GetRanges))]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CollectionDto<RangeDto>))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult GetRanges()
         {
             return Ok(ToDto(_ranges));
@@ -28,9 +26,7 @@
         [HttpGet]
         [Route("{id:int}", Name = nameof(GetRange))]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(RangeDto))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult GetRange(int id)
         {         
             var range = _ranges.Where(r => r.Id == id).FirstOrDefault();
@@ -43,12 +39,22 @@
             return Ok(ToDto(range));
         }
 
+        [HttpPost]
+        [Route("", Name = nameof(PostRange))]
+        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(DtoBase))]
+        public IActionResult PostRange()
+        {         
+            var dto = new DtoBase();
+           
+            AddLinks(dto, 1);
+
+            return CreatedAtAction(nameof(GetRange), new { id = 1 }, dto);
+        }
+
         [HttpDelete]
         [Route("{id:int}", Name = nameof(DeleteRange))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public IActionResult DeleteRange(int id)
         {
             var range = _ranges.Where(r => r.Id == id).FirstOrDefault();
@@ -68,8 +74,7 @@
             dto.Min = range.Min;
             dto.Max = range.Max;
 
-            dto.Links.Add(UrlLink("self", nameof(GetRange), new { id = range.Id }));
-            dto.Links.Add(UrlLink("delete", nameof(DeleteRange), new { id = range.Id }));
+            AddLinks(dto, dto.Id);
 
             return dto;
         }
@@ -79,9 +84,20 @@
             var dto = new CollectionDto<RangeDto>();
             dto.Records = ranges.Select(r => ToDto(r)).ToList();
 
-            dto.Links.Add(UrlLink("self", nameof(GetRanges), null));
+            AddCollectionLinks(dto);
 
             return dto;
+        }
+
+        protected void AddLinks(DtoBase dtoBase, int id)
+        {
+            dtoBase.Links.Add(UrlLink("self", nameof(GetRange), new { id }));
+            dtoBase.Links.Add(UrlLink("delete", nameof(DeleteRange), new { id }));
+        }
+
+        protected void AddCollectionLinks(DtoBase dtoBase)
+        {
+            dtoBase.Links.Add(UrlLink("self", nameof(GetRanges), null));
         }
     }
 }
